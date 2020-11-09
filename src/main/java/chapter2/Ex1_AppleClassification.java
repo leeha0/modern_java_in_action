@@ -1,20 +1,21 @@
 package chapter2;
 
-import com.sun.org.apache.regexp.internal.RE;
+import chapter2.model.Apple;
+import chapter2.model.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static chapter2.Ex1_AppleClassification.Color.GREEN;
-import static chapter2.Ex1_AppleClassification.Color.RED;
+import static chapter2.model.Color.GREEN;
+import static chapter2.model.Color.RED;
 
 public class Ex1_AppleClassification {
 
     public static void main(String[] args) {
         ArrayList<Apple> inventory = new ArrayList<>();
-        inventory.add(new Apple(1, Color.GREEN));
+        inventory.add(new Apple(1, GREEN));
         inventory.add(new Apple(2, RED));
-        inventory.add(new Apple(3, Color.GREEN));
+        inventory.add(new Apple(3, GREEN));
 
         filterGreenApples(inventory);
         filterRedApples(inventory);
@@ -86,28 +87,5 @@ public class Ex1_AppleClassification {
         }
 
         return result;
-    }
-
-    static class Apple {
-        Integer weight;
-        Color color;
-
-        public Apple(Integer weight, Color color) {
-            this.weight = weight;
-            this.color = color;
-        }
-
-        public Integer getWeight() {
-            return weight;
-        }
-
-        public Color getColor() {
-            return color;
-        }
-    }
-
-    enum Color {
-        GREEN,
-        RED;
     }
 }
