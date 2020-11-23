@@ -10,7 +10,6 @@ public class Ex3_Predicate {
         List<String> listOfStrings = new ArrayList<>();
         listOfStrings.add("");
         listOfStrings.add("test1");
-        listOfStrings.add(null);
 
         Predicate<String> nonEmptyStringPredicate = (String s) -> !s.isEmpty();
         List<String> nonEmpty = filter(listOfStrings, nonEmptyStringPredicate);
