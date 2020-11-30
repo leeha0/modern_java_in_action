@@ -2,8 +2,6 @@ package chapter3;
 
 import java.util.function.Function;
 
-import org.omg.PortableInterceptor.INACTIVE;
-
 public class Ex15_FunctionDefaultMethod {
 
     public static void main(String[] args) {
