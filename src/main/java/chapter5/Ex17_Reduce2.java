@@ -1,7 +1,6 @@
 package chapter5;
 
 import java.util.List;
-import java.util.Optional;
 
 public class Ex17_Reduce2 {
 
