@@ -1,15 +1,19 @@
 package chapter5.model;
 
+import java.util.Currency;
+
 public class Transaction {
 
     private final Trader trader;
     private final int year;
     private final int value;
+    private final Currency currency;
 
     public Transaction(Trader trader, int year, int value) {
         this.trader = trader;
         this.year = year;
         this.value = value;
+        currency = null;
     }
 
     public Trader getTrader() {
@@ -22,6 +26,10 @@ public class Transaction {
 
     public int getValue() {
         return value;
+    }
+
+    public Currency getCurrency() {
+        return currency;
     }
 
     @Override

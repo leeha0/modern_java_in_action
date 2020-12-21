@@ -8,4 +8,7 @@
 * 4장
     - [스트림 소개](https://leeha0.tistory.com/58)
 * 5장
-    - [스트림 활용](https://leeha0.tistory.com/59)
+    - [스트림 활용#1](https://leeha0.tistory.com/59)
+    - [스트림 활용#2](https://leeha0.tistory.com/61)
+* 6장
+    - [스트림으로 데이터 수집](https://leeha0.tistory.com/64)
