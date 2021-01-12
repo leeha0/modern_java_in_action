@@ -20,6 +20,6 @@ public class Ex8_VariousWay {
         // 합계: 특화 스트림(IntStream) 사용하는 방법
         int totalCalories3 = Dish.dishes().stream()
             .mapToInt(Dish::getCalories).sum();
-
+        System.out.println("totalCalories3 = " + totalCalories3);
     }
 }
