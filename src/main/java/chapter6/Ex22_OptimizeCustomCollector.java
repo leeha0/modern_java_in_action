@@ -19,9 +19,18 @@ public class Ex22_OptimizeCustomCollector {
     }
 
     public static boolean isPrime(int candidate) {
-        // 개선1: 제곱근 이하로 대상 숫자 범위를 제한하여 isPrame 메서드 개선
+        // 개선1: 제곱근 이하로 대상 숫자 범위를 제한하여 isPrime 메서드 개선
         int candidateRoot = (int) Math.sqrt((double) candidate);
         return IntStream.rangeClosed(2, candidateRoot)
+            .noneMatch(i -> candidate % i == 0);
+    }
+
+    public static boolean isPrime(List<Integer> primes, int candidate) {
+        // 개선2: 지금까지 발견된 소수 리스트로 제수(devisor)가 나누어떨어지는지 확인 (중간 결과가 있다면)
+        int candidateRoot = (int) Math.sqrt((double) candidate);
+        return primes.stream()
+            // .filter(i -> i <= candidateRoot) // 전체 스트림을 처리한 다음에 결과를 반환
+            .takeWhile(i -> i <= candidateRoot) // 조건을 만족할때까지의 요소 반환
             .noneMatch(i -> candidate % i == 0);
     }
 }
