@@ -1,5 +1,7 @@
 package chapter6;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -15,6 +17,23 @@ public class Ex23_TakeWhileForJava8 {
     public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
         return IntStream.rangeClosed(2, n).boxed()
             .collect(new Ex23_PrimeNumbersCollector());
+    }
+
+    public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollect(int n) {
+        return IntStream.rangeClosed(2, n).boxed()
+            .collect(
+                // 발행
+                () -> new HashMap<Boolean, List<Integer>>() {{
+                    put(true, new ArrayList<>());
+                    put(false, new ArrayList<>());
+                }},
+                // 누적
+                (acc, candidate) -> acc.get(isPrime(acc.get(true), candidate)).add(candidate),
+                // 합침
+                (map1, map2) -> {
+                    map1.get(true).addAll(map2.get(true));
+                    map2.get(false).addAll(map2.get(false));
+                });
     }
 
     public static boolean isPrime(List<Integer> primes, int candidate) {
