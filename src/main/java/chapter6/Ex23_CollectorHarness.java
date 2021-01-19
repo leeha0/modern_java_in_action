@@ -3,41 +3,41 @@ package chapter6;
 import static chapter6.Ex22_OptimizeCustomCollector.partitionPrimes;
 import static chapter6.Ex23_TakeWhileForJava8.partitionPrimesWithCustomCollector;
 
+import chapter3.function.Action;
+
 public class Ex23_CollectorHarness {
 
     public static void main(String[] args) {
-        partitioningByHarness();
-        partitioningByWithCustomCollectorHarness();
+        int n = 1_000_000;
+
+        Action action1 = () -> partitionPrimes(n);
+        // Fastest execution done in 307 msecs
+        Action action2 = () -> partitionPrimesWithCustomCollector(n);
+        // Fastest execution done in 280 msecs
+
+        testPartitioningBy(action1);
+        testPartitioningBy(action2);
     }
 
-    private static void partitioningByHarness() {
+    private static void testPartitioningBy(Action action) {
         long fastest = Long.MAX_VALUE;
+
         for (long i = 0; i < 20; i++) {
             long start = System.nanoTime();
-            partitionPrimes(1_000_000); // 백만 개의 숫자를 소수와 비소수로 분할한다.
-            long duration = (System.nanoTime() - start) / 1_000_000;
-            if (duration < fastest) { // 가장 빠른 케이스를 기록
-                fastest = duration;
-            }
+            action.act();
+            fastest = getFastestDuration(fastest, start);
         }
 
-        System.out.println("Fastest execution done in " + fastest + " msecs (partitioningByHarness)");
-        // Fastest execution done in 307 msecs (partitioningByHarness)
+        System.out.println("Fastest execution done in " + fastest + " msecs");
     }
 
-    // 32 프로의 성능 향상 ..?
-    private static void partitioningByWithCustomCollectorHarness() {
-        long fastest = Long.MAX_VALUE;
-        for (long i = 0; i < 20; i++) {
-            long start = System.nanoTime();
-            partitionPrimesWithCustomCollector(1_000_000); // 백만 개의 숫자를 소수와 비소수로 분할한다.
-            long duration = (System.nanoTime() - start) / 1_000_000;
-            if (duration < fastest) { // 가장 빠른 케이스를 기록
-                fastest = duration;
-            }
-        }
+    private static long getFastestDuration(long fastest, long start) {
+        long duration = (System.nanoTime() - start) / 1_000_000;
 
-        System.out.println("Fastest execution done in " + fastest + " msecs (partitioningByWithCustomCollectorHarness)");
-        // Fastest execution done in 280 msecs (partitioningByWithCustomCollectorHarness)
+        // 가장 빠른 케이스를 기록
+        if (duration < fastest) {
+            fastest = duration;
+        }
+        return fastest;
     }
 }

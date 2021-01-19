@@ -20,6 +20,7 @@ public class Ex22_OptimizeCustomCollector {
 
     public static boolean isPrime(int candidate) {
         // 개선1: 제곱근 이하로 대상 숫자 범위를 제한하여 isPrime 메서드 개선
+        // candidate로 나눌때 나눈 결과의 몫이 candidate보다 작아지기 때문
         int candidateRoot = (int) Math.sqrt((double) candidate);
         return IntStream.rangeClosed(2, candidateRoot)
             .noneMatch(i -> candidate % i == 0);
