@@ -12,3 +12,5 @@
     - [스트림 활용#2](https://leeha0.tistory.com/61)
 * 6장
     - [스트림으로 데이터 수집](https://leeha0.tistory.com/64)
+* 7장
+    - [병렬 데이터 처리와 성능](https://leeha0.tistory.com/66)
