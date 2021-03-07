@@ -1,7 +1,9 @@
 package chapter7;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
+
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -16,13 +18,14 @@ import org.openjdk.jmh.annotations.TearDown;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(value = 2, jvmArgs = {"-Xms4G", "-Xmx4G"})
-public class Ex02_ToParallelStreamJMH {
+public class Ex02_ParallelStreamJMH {
 
     private static final long N = 10_000_000L;
 
     @Benchmark
     public long sequentialSum() {
-        return Stream.iterate(1L, i -> i + 1).limit(N)
+        return Stream.iterate(1L, i -> i + 1)
+            .limit(N)
             .reduce(0L, Long::sum);
     }
 
@@ -37,8 +40,22 @@ public class Ex02_ToParallelStreamJMH {
 
     @Benchmark
     public long parallelSum() {
-        return Stream.iterate(1L, i -> i + 1).parallel()
+        return Stream.iterate(1L, i -> i + 1)
+            .parallel()
             .limit(N)
+            .reduce(0L, Long::sum);
+    }
+
+    @Benchmark
+    public long rangedSum() {
+        return LongStream.rangeClosed(1, N)
+            .reduce(0L, Long::sum);
+    }
+
+    @Benchmark
+    public long parallelRangedSum() {
+        return LongStream.rangeClosed(1, N)
+            .parallel()
             .reduce(0L, Long::sum);
     }
 

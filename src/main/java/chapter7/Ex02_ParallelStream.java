@@ -2,7 +2,7 @@ package chapter7;
 
 import java.util.stream.Stream;
 
-public class Ex02_ToParallelStream {
+public class Ex02_ParallelStream {
 
     public static void main(String[] args) {
         System.out.println("parallelSum(10) = " + parallelSum(10));
@@ -25,7 +25,7 @@ public class Ex02_ToParallelStream {
          *      .filter()
          *      .sequential()
          *      .map()
-         *      .parallel()
+         *      .parallel() // 마지막에 호출한 메서드 적용
          *      .reduce();
          */
 
