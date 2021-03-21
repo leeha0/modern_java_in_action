@@ -14,7 +14,6 @@ public class Ex06_SequentialWordCounter {
     private final int counter;
     private final boolean lastSpace;
 
-
     public static void main(String[] args) {
         Stream<Character> stream = IntStream.range(0, SENTENCE.length())
             .mapToObj(SENTENCE::charAt);

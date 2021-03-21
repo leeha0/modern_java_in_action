@@ -30,5 +30,4 @@ public class Ex05_IterativeWordCounter {
         }
         return counter;
     }
-
 }
