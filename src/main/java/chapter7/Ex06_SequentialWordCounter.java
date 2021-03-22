@@ -1,40 +1,15 @@
 package chapter7;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 
 public class Ex06_SequentialWordCounter {
+
     // 불변 클래스 정의
-
-    private static final String SENTENCE =
-        "Nel   mezzo del cammi di nostra vita "
-            + "mi ritrovai in una  selva oscura "
-            + "ch la dritta via era smarrita ";
-
     private final int counter;
     private final boolean lastSpace;
-
-    public static void main(String[] args) {
-        Stream<Character> stream = IntStream.range(0, SENTENCE.length())
-            .mapToObj(SENTENCE::charAt);
-        int sequentialWordCount = countWords(stream);
-        System.out.println("Found " + sequentialWordCount + " words");
-        // Found 19 words
-
-        int parallelWordCount = countWords(stream.parallel());
-        System.out.println("Found " + parallelWordCount + " words");
-        // Found 38 words
-        // 스트림 분할 위치에 따라 하나의 단어가 둘로 계산되는 상황 발생
-    }
-
-    public static int countWords(Stream<Character> stream) {
-        Ex06_SequentialWordCounter wordCounter = stream.reduce(
-            new Ex06_SequentialWordCounter(0, true),       // 초깃값
-            Ex06_SequentialWordCounter::accumulate,                         // 변환 함수
-            Ex06_SequentialWordCounter::combine                             // BinaryOperator(병합)
-        );
-        return wordCounter.getCounter();
-    }
 
     public Ex06_SequentialWordCounter(int counter, boolean lastSpace) {
         this.counter = counter;
@@ -42,6 +17,7 @@ public class Ex06_SequentialWordCounter {
     }
 
     // 새로운 문자를 찾을 때마다 호출
+    // TODO BiFunction 시그니처가 일치하지 않는데 시그니처가 일치하는 이유 ?
     public Ex06_SequentialWordCounter accumulate(Character c) {
         if (Character.isWhitespace(c)) {
             return lastSpace ? this : new Ex06_SequentialWordCounter(counter, true);
@@ -51,11 +27,37 @@ public class Ex06_SequentialWordCounter {
         }
     }
 
+    // TODO wordCounter = Identity
+    private BiFunction<Ex06_SequentialWordCounter, Character, Ex06_SequentialWordCounter> accumulateInterface() {
+        return (wordCounter, c) -> {
+            if (Character.isWhitespace(c)) {
+                return lastSpace ? this : new Ex06_SequentialWordCounter(counter, true);
+            } else {
+                // 공백 문자 발견 시 단어 수 증가
+                return lastSpace ? new Ex06_SequentialWordCounter(counter + 1, false) : this;
+            }
+        };
+    }
+
+    // TODO BinaryOperator 시그니처가 일치하지 않는데 시그니처가 일치하는 이유 ?
     public Ex06_SequentialWordCounter combine(Ex06_SequentialWordCounter wordCounter) {
         return new Ex06_SequentialWordCounter(counter + wordCounter.counter, wordCounter.lastSpace);
     }
 
+    // TODO wordCounter1 = Identity
+    private BinaryOperator<Ex06_SequentialWordCounter> combineInterface() {
+        return (wordCounter1, wordCounter2) ->
+            new Ex06_SequentialWordCounter(counter + wordCounter2.counter, wordCounter2.lastSpace);
+    }
+
     public int getCounter() {
         return counter;
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException {
+        Method m = Ex06_SequentialWordCounter.class.getDeclaredMethod("accumulate", Character.class);
+        for (Parameter p : m.getParameters()) {
+            System.out.printf("name: %s, type: %s%n", p.getName(), p.getType());
+        }
     }
 }
