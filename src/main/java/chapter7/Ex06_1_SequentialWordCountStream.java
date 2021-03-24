@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Ex06_SequentialWordCountStream {
+public class Ex06_1_SequentialWordCountStream {
 
     private static final String SENTENCE =
         "Nel   mezzo del cammi di nostra vita "
@@ -25,10 +25,20 @@ public class Ex06_SequentialWordCountStream {
     }
 
     public static int countWords(Stream<Character> stream) {
-        Ex06_SequentialWordCounter wordCounter = stream.reduce(
-            new Ex06_SequentialWordCounter(0, true),       // 초깃값
-            Ex06_SequentialWordCounter::accumulate,                         // BiFunction (변환 함수)
-            Ex06_SequentialWordCounter::combine                             // BinaryOperator(병합)
+        Ex06_1_SequentialWordCounter wordCounter = stream.collect(
+            () -> new Ex06_1_SequentialWordCounter(0, true), // 누적자
+            (Ex06_1_SequentialWordCounter counter, Character c) -> {           // 누적자, 요소
+                if (Character.isWhitespace(c)) {
+                    counter.setLastSpace(true);
+                } else {
+                    if (counter.isLastSpace()) {
+                        counter.addCounter(1, false);
+                    }
+                }
+            },
+            (counter1, counter2) -> {                                          // 누적자 병합
+                counter1.addCounter(counter2.getCounter(), false);
+            }
         );
         return wordCounter.getCounter();
     }
