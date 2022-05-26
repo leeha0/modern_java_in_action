@@ -1,5 +1,10 @@
 package chapter7;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -19,6 +24,7 @@ public class Ex06_SequentialWordCountStream {
         // Found 19 words
 
         int parallelWordCount = countWords(stream.parallel());
+        // IntStream.range: RangeIntSpliterator 사용 (1개 미만이 될 때까지 분할)
         System.out.println("Found " + parallelWordCount + " words");
         // Found 38 words
         // 스트림 분할 위치에 따라 하나의 단어가 둘로 계산되는 상황 발생

@@ -14,8 +14,12 @@ public class Ex07_ParallelWordCounter {
     public static void main(String[] args) {
         Spliterator<Character> spliterator = new Ex07_WordCounterSpliterator(SENTENCE);
         Stream<Character> stream = StreamSupport.stream(spliterator, true);
-        int wordCount = reducingWordCount(stream);
-        System.out.println("Found " + wordCount + " words");
+        int reduceWordCount = reducingWordCount(stream);
+        System.out.println("Found " + reduceWordCount + " words");
+        // Found 19 words
+
+        int collectWordCount = collectingWordCount(stream);
+        System.out.println("Found " + collectWordCount + " words");
         // Found 19 words
     }
 
